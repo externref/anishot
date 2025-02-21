@@ -114,7 +114,7 @@ async function uploadAndProcessScreenshot(dataUrl) {
   formData.append("file", blob, "screenshot.png");
 
   try {
-      const response = await fetch("http://127.0.0.1:8000/apply", {
+      const response = await fetch("https://anishot.onrender.com/apply", {
           method: "POST",
           body: formData
       });
