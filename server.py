@@ -1,7 +1,5 @@
 import io
-
-import fastapi
-from fastapi import FastAPI, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import Response
 from PIL import Image, ImageDraw, ImageFont
 
@@ -12,19 +10,22 @@ async def apply(file: UploadFile, addWatermark: bool = Form(False)):
     try:
         image_bytes = await file.read()
         image = Image.open(io.BytesIO(image_bytes))
-        
+
         if addWatermark:
             image_draw = ImageDraw.Draw(image)
-            fontface = ImageFont.load_default()
+            font = ImageFont.load_default()
             text = "anishot_"
-            text_width, text_height = image_draw.textsize(text, font=fontface)
-            
-            position = (image.width - text_width - 10, image.height - text_height - 10)
-            image_draw.text(position, text, font=fontface)
-        
+            text_width, text_height = image_draw.textbbox((0, 0), text, font=font)[2:]
+            padding = 10
+            position = (image.width - text_width - padding, image.height - text_height - padding)
+
+            image_draw.text(position, text, font=font, fill="white")
+
         img_byte_array = io.BytesIO()
         image.save(img_byte_array, format="PNG")
         img_byte_array.seek(0)
+
         return Response(content=img_byte_array.getvalue(), media_type="image/png")
+
     except Exception as e:
-        raise e
+        return {"error": str(e)}
