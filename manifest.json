@@ -1,0 +1,14 @@
+{
+  "name": "anishot",
+  "description": "chrome extension for customisable screenshots",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["tabs", "activeTab", "scripting", "downloads"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "static/background.js"
+  },
+  "action": {
+    "default_popup": "static/index.html"
+  }
+}

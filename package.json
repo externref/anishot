@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "watch:css": "yarn tailwindcss -i ./static/source.css -o ./static/styles.css --watch",
+    "build:css": "yarn tailwindcss -i ./static/source.css -o ./static/styles.css"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.7",
+    "bootstrap-icons": "^1.11.3",
+    "tailwindcss": "^4.0.7"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.1"
+  }
+}
