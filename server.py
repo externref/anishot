@@ -23,7 +23,7 @@ async def apply(file: UploadFile, addWatermark: bool = Form(False)):
             try:
                 font = ImageFont.truetype("arial.ttf", font_size)
             except IOError:
-                font = ImageFont.load_default() 
+                font = ImageFont.load_default(font_size) 
             text = "anishot_"
             padding = int(font_size * 0.5) 
             text_width, text_height = image_draw.textbbox((0, 0), text, font=font)[2:]
