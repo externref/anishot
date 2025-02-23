@@ -1,0 +1,41 @@
+name: Archive and Upload Artifacts
+
+on:
+  push:
+    branches:
+      - main  # Change this if needed
+
+jobs:
+  archive-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create ZIP archive
+        run: zip -r anishot.zip extension
+
+      - name: Create TAR.GZ archive
+        run: tar -czvf anishot.tar.gz extension
+
+      - name: Create TAR.XZ archive
+        run: tar -cJvf anishot.tar.xz extension
+
+      - name: Upload ZIP as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: anishot-zip
+          path: anishot.zip
+
+      - name: Upload TAR.GZ as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: anishot-tar-gz
+          path: anishot.tar.gz
+
+      - name: Upload TAR.XZ as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: anishot-tar-xz
+          path: anishot.tar.xz
