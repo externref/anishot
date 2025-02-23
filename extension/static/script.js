@@ -1,8 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const gh = document.getElementById("ghBtn");
+  gh.addEventListener("click", () => {
+    chrome.tabs.create({ url: "https://github.com/externref/anishot" });
+  });
+
   const button = document.getElementById("screenshotBtn");
+  const frameSelector = document.getElementById("frameSelector")
   const fullPageCheckbox = document.getElementById("captureFull");
   const watermarkCheckbox = document.getElementById("allowWatermark");
+  let frameValue = "default"
+  const frameOptions = frameSelector.children;
 
+    for (let frame of frameOptions) {
+      frame.addEventListener("click", () => {
+        for (let option of frameOptions) {
+          option.classList.remove("bg-gray-900");
+        }
+        frame.classList.add("bg-gray-900");
+        frameValue=frame.id
+        document.getElementById("frameValue").innerText=frame.id
+      });
+    }
+  
   if (!button) {
     console.error("Button not found!");
     return;
@@ -17,11 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
         : await visibleScreenshot();
       if (!dataUrl) throw new Error("Failed to capture screenshot");
 
-      await uploadAndProcessScreenshot(dataUrl, addWatermark);
+      await uploadAndProcessScreenshot(dataUrl, addWatermark, frameValue);
     } catch (error) {
       console.error("Screenshot Error:", error);
     }
   });
+
 });
 
 async function visibleScreenshot() {
@@ -114,14 +134,15 @@ async function scrollAndCapture() {
   return canvas.toDataURL("image/png");
 }
 
-async function uploadAndProcessScreenshot(dataUrl, addWatermark) {
+async function uploadAndProcessScreenshot(dataUrl, addWatermark, frameValue) {
   const blob = await fetch(dataUrl).then((res) => res.blob());
   const formData = new FormData();
   formData.append("file", blob, "screenshot.png");
   formData.append("addWatermark", addWatermark);
+  formData.append("frame", frameValue);
 
   try {
-    const response = await fetch("https://anishot.onrender.com/apply", {
+    const response = await fetch("http://127.0.0.1:8000/apply", {
       method: "POST",
       body: formData,
     });
@@ -134,7 +155,7 @@ async function uploadAndProcessScreenshot(dataUrl, addWatermark) {
     const timestamp = Date.now();
     chrome.downloads.download({
       url: processedBlobUrl,
-      filename: `anishot_${timestamp}.png`,
+      filename: `anishot_${frameValue}_${timestamp}.png`,
       saveAs: true,
     });
 

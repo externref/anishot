@@ -11,10 +11,34 @@
     <div>
       <p class="text-center my-2 text-3xl">anishot_</p>
     </div>
+
+    <div class="h-0.5 m-2 rounded-md bg-green-300"></div>
+    <p class="text-xl">Frame <span class="italic text-[12px]">(currently selected: <span class="font-semibold text-green-300" id="frameValue">default</span>)</span></p>
+    <div id="frameSelector" class="m-2 grid gap-1 grid-cols-2 h-[200px]">
+      <div id="default" class="rounded-md p-2 hover:bg-gray-900 max-h-max">
+        <div class="border rounded bg-gray-500 h-[95px] border-gray-400">
+       
+        </div><p class="text-center">None</p>
+      </div>
+      <div id="kuromi" class="rounded-md p-2 hover:bg-gray-900 max-h-max">
+        <img
+          class="rounded"
+          width="170px"
+          src="../assets/kuromi.png"
+        />
+        <p class="text-center">Kuromi</p>
+      </div>
+    </div>
+   
+
     <div>
       <div class="h-0.5 m-2 rounded-md bg-green-300"></div>
-
-      <input id="allowWatermark" class="align-middle" type="checkbox" checked="true" />
+      <input
+        id="allowWatermark"
+        class="align-middle"
+        type="checkbox"
+        checked="true"
+      />
       <label class="align-top" for="allowWatermark">Allow watermark</label>
       <br />
       <input id="captureFull" class="align-middle" type="checkbox" />
@@ -28,9 +52,9 @@
     </div>
     <div class="text-center">
       <div class="h-0.5 m-2 rounded-md bg-gray-600"></div>
-      <a href="https://github.com/externref/anishot"
-        ><i class="bi bi-github align-middle"></i> Source on Github</a
-      >
+      <button id="ghBtn" href="https://github.com/externref/anishot">
+        <i class="bi bi-github align-middle"></i> Source on Github
+      </button>
     </div>
   </body>
 </html>
