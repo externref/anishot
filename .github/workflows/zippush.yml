@@ -3,7 +3,7 @@ name: Archive and Upload Artifacts
 on:
   push:
     branches:
-      - main  # Change this if needed
+      - main
 
 jobs:
   archive-and-upload:
