@@ -1,0 +1,45 @@
+name: Publish Release
+
+on:
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: Move artifacts to root
+        run: |
+          mv artifacts/anishot-zip/anishot.zip .
+          mv artifacts/anishot-tar-gz/anishot.tar.gz .
+          mv artifacts/anishot-tar-xz/anishot.tar.xz .
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v-${{ github.run_number }}
+          name: "Anishot Release #${{ github.run_number }}"
+          body: "Manually confirmed release."
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload archives to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            anishot.zip
+            anishot.tar.gz
+            anishot.tar.xz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
